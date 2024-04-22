@@ -158,7 +158,7 @@ const MenuTable = () => {
               <tr
                 class="bg-white border-b dark:bg-gray-900 dark:border-gray-700 hover:bg-gray-200"
                 key={item._id}
-                //  onClick={()=>navigate(`/menudetail/${item._id}`)}
+                 onClick={()=>navigate(`/menudetail/${item._id}`)}
               >
                  <td class="px-6 py-2">{item._id.slice(0,6)}</td>
                 {/* <th
