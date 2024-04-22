@@ -15,6 +15,7 @@ import { UserContextProvider } from './context/UserContext'
 import MenuPage from './pages/MenuPage'
 import MenuTable from './pages/menuTable'
 import MenuDetail from './pages/MenuDetail'
+import EditMenu from './pages/EditMenu'
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
     <Route exact path="/menupage" element={<MenuPage/>}/>
     <Route exact path="/menutable" element={<MenuTable/>}/>
     <Route exact path="/menudetail/:id" element={<MenuDetail/>}/>
+    <Route exact path="/editmenu/:id" element={<EditMenu/>}/>
     </Routes>
      </UserContextProvider>
   )

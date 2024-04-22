@@ -40,7 +40,7 @@ const AdminLogin = () => {
 
     setIsLoading(true)
     try{
-      const res = await axios.post(URL+"/api/auth/login", {email,password})
+      const res = await axios.post(URL+"/api/auth/adminlogin", {email,password})
 
       const {access_token} = res.data;
 

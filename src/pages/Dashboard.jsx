@@ -13,12 +13,19 @@ const  Dashboard = () => {
   const navigate=useNavigate()
     const [showConfirmation, setShowConfirmation] = useState("");
     const [items, setItems] = useState([]);
-    const [sortOrder, setSortOrder] = useState('desc');
+
 
     const fetchBookings = async () => {
 
-        const res = await axios.get(URL+"/api/bookings"
-        //,{
+      // const accessToken = localStorage.getItem("access_token");
+
+      // if (!accessToken) {
+      //   // Handle the case where the access token is not available
+      //   console.error("Access token not fund");
+      // }
+
+        const res = await axios.get(URL+"/api/bookings",
+        // {
         //   headers: {
         //     Authorization: `Bearer ${accessToken}`,
         //   },
@@ -34,47 +41,24 @@ const  Dashboard = () => {
     }, [])
 
 
-    const descendingEvent = () => {
-      let data = [...items]
-      if(data.length > 0){
-        let result = data.sort((a,b) => b.menu.localeCompare(a.menu))
-        setItems(result)
-      }
-    }
 
-  // Function to handle sorting
-  const handleSort = () => {
-    // Toggle between ascending and descending order
-    const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-    setSortOrder(newSortOrder);
-
-    // Sort the data based on the sortOrder
-    const sortedData = [...items].sort((a, b) => {
-      if (newSortOrder === 'asc') {
-        return a.menu - b.menu; // Change columnName to your actual sorting column
-      } else {
-        return b.menu - a.menu;
-      }
-    });
-
-    // Update the state with sorted data
-    setItems(sortedData);
-  };
 
 
     const handleDelete=async(itemId)=>{
       try{
-        const accessToken = localStorage.getItem("access_token");
+        // const accessToken = localStorage.getItem("access_token");
 
-        if(!accessToken){
-              // Handle the case where the access token is not available
-          console.error('Access token not found')
-        }
-        const res = await axios.delete(URL+"/api/bookings/"+itemId,{
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
+        // if(!accessToken){
+        //       // Handle the case where the access token is not available
+        //   console.error('Access token not found')
+        // }
+        const res = await axios.delete(URL+"/api/bookings/"+itemId
+        // ,{
+        //   headers: {
+        //     Authorization: `Bearer ${accessToken}`,
+        //   },
+        // }
+      )
         setItems((prevData) => prevData.filter(item => item._id !== itemId));
         console.log(res.data)
       }
@@ -113,7 +97,7 @@ const  Dashboard = () => {
       </h1>
 
       <div class="max-h-60 overflow-y-auto">
-      <button className='border border-[#F08E1F] px-6 py-1 rounded' onClick={descendingEvent}>Latest Booking</button>
+
       <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-5">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr >
@@ -135,7 +119,7 @@ const  Dashboard = () => {
             </th>
           
             <th scope="col" class="px-6 py-3 font-light text-[#F08E1F]">
-              edit
+              view
             </th>
             <th scope="col" class="px-6 py-3 font-light text-[#F08E1F]">
               delete
