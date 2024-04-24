@@ -86,6 +86,12 @@ const  Dashboard = () => {
     
     <h1 className='font-bold md:text-2xl text-xl text-[#F08E1F]'>Create menu</h1>
     </div></Link> 
+
+
+    <Link to={'/crockerypage'}><div className="flex items-center space-x-3 pt-6 px-12">
+    
+    <h1 className='font-bold md:text-2xl text-xl text-[#F08E1F]'>Create crockery</h1>
+    </div></Link> 
         </div>
 
         <div className='max-w-[1100px] bg-white mx-auto'>

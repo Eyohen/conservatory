@@ -66,6 +66,10 @@ const Home = () => {
     const [selectedMenu,setSelectedMenu] = useState([]) 
     const [pickmenu, setPickMenu] = useState([])
     const [selectedPickMenu,setSelectedPickMenu] = useState([]) 
+    const [crockery, setCrockery] = useState([])
+    const [selectedCrockery,setSelectedCrockery] = useState([]) 
+    const [pickcrockery, setPickCrockery] = useState([])
+    const [selectedPickCrockery,setSelectedPickCrockery] = useState([]) 
     const [time,setTime] = useState("")  
     const [error,setError]=useState(false)
     const [isLoading,setIsLoading]=useState(false)
@@ -110,6 +114,10 @@ const Home = () => {
         setSelectedPickMenu(e.target.value);
       };
 
+      const handleCrockery2 = (e) => {
+        setSelectedPickCrockery(e.target.value);
+      };
+
       const fetchMenu = async () => {
         try {
           const res = await axios.get(URL + "/api/menus/" + search);
@@ -136,23 +144,33 @@ const Home = () => {
       }, [search]);
 
 
-//       const handleItemSearch = () => {
-//   // Assuming the location is part of the selectedSubMarket state or needs to be determined here
-//   // Find the selected market to get its location
-//   const selectedM = menu.find((m) => m._id === id);
 
-//   if (selectedM) {
-//     navigate(`/menudetail/${id}`);
-//   } else {
-//     console.log("menu not found");
-//     // Handle cases where the market's location isn't found
-//   }
-// };
+      const fetchCrockery = async () => {
+        try {
+          const res = await axios.get(URL + "/api/crockerys/" + search);
+          setCrockery(res.data);
+          console.log(res.data)
+        } catch (err) {
+          console.log(err);
+        }
+      };
 
-// const handleOptionClick = (id) => {
-//     // redirect to the corresponding page based on the option id
-//     navigate(`/menudetail/${id}`);
-// }
+      const fetchPickCrockery = async () => {
+        try {
+          const res = await axios.get(URL + "/api/crockerys/" + search);
+          setPickCrockery(res.data);
+          console.log(res.data)
+        } catch (err) {
+          console.log(err);
+        }
+      };
+    
+      useEffect(() => {
+        fetchCrockery();
+        fetchPickCrockery();
+      }, [search]);
+
+
 
 
 const handleMenu = (event) => {
@@ -163,6 +181,19 @@ const handleMenu = (event) => {
     navigate(`/menudetail/${selectedMenuItem._id}`);
   } else {
     console.log("Menu not found");
+    // Handle cases where the menu item isn't found
+  }
+};
+
+
+const handleCrockery = (event) => {
+  // setSelectedMenu(e.target.value);
+  const selectedCrockeryItem = crockery.find(men => men.crockery === event.target.value);
+  if (selectedCrockeryItem) {
+    setSelectedCrockery(event.target.value);
+    navigate(`/crockerydetail/${selectedCrockeryItem._id}`);
+  } else {
+    console.log("Crockery not found");
     // Handle cases where the menu item isn't found
   }
 };
@@ -177,7 +208,7 @@ const handleMenu = (event) => {
                 // Handle the case where the access token is not available
             console.error('Access token not found')
           }
-          const res = await axios.post(URL+"/api/bookings/create",{time:selectedTime,menu:selectedPickMenu,date:startDate }, {
+          const res = await axios.post(URL+"/api/bookings/create",{time:selectedTime,menu:selectedPickMenu,date:startDate, crockery:selectedPickCrockery }, {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             }
@@ -195,6 +226,8 @@ const handleMenu = (event) => {
         }
     
       }
+
+      
     
 
 
@@ -244,6 +277,25 @@ const handleMenu = (event) => {
           </select>
 
           </div> 
+
+          <div className='grid grid-cols-2 gap-x-6 mt-4'>
+                  <select value={selectedCrockery} onChange={(e) => handleCrockery(e)} className="border border-gray-300 text-gray-500 px-2 py-1 ">
+            <option value="">DISCOVER CROCKERY:</option>
+           {crockery.map(item => (
+              <option key={item._id} onClick={() => handleCrockery(item._id)} value={item.crockery}>{item.crockery}</option>
+            ))}   
+          </select>
+
+          <select value={selectedPickCrockery} onChange={handleCrockery2} className="border border-gray-300 text-gray-500 px-2 py-1">
+            <option value="">SELECT CROCKERY:</option>
+            {pickcrockery.map(item => (
+              <option key={item._id} value={item.crockery}>{item.crockery}</option>
+            ) )}
+          </select>
+
+          </div> 
+
+
           <div className='flex justify-center'>
           <button onClick={handleBooking} className="bg-[#ffb640] text-white py-1 mt-9 px-24 rounded">{isLoading ? "Loading..." : "Book"}</button>
 

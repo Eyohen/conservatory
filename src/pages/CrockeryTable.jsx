@@ -10,12 +10,12 @@ import { MdEdit } from "react-icons/md";
 
 
 
-const MenuTable = () => {
+const CrockeryTable = () => {
   const navigate=useNavigate()
     const [showConfirmation, setShowConfirmation] = useState("")
     const [items, setItems] = useState([])
 
-    const fetchMenus = async () => {
+    const fetchCrockeries = async () => {
 
     //   const accessToken = localStorage.getItem("access_token");
 
@@ -25,7 +25,7 @@ const MenuTable = () => {
     //   }
 
 
-        const res = await axios.get(URL+"/api/list-posts"
+        const res = await axios.get(URL+"/api/crockerys"
         //,{
         //   headers: {
         //     Authorization: `Bearer ${accessToken}`,
@@ -38,13 +38,11 @@ const MenuTable = () => {
 
 
     useEffect(() => {
-      fetchMenus()
+      fetchCrockeries()
     }, [])
 
 
-    const handleSearch = () => {
 
-    }
 
     const handleDelete=async(itemId)=>{
       try{
@@ -56,7 +54,7 @@ const MenuTable = () => {
         }
   
   
-        const res = await axios.delete(URL+"/api/menus/"+itemId,{
+        const res = await axios.delete(URL+"/api/crockerys/"+itemId,{
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -86,7 +84,7 @@ const MenuTable = () => {
         <div className='max-w-[1100px] bg-white mx-auto'>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-16">
       <h1 className="font-bold text-2xl mt-10 text-center text-[#F08E1F]">
-        Posts Created
+        Crockeries Created
       </h1>
 
       <div class="max-h-60 overflow-y-auto">
@@ -97,7 +95,7 @@ const MenuTable = () => {
               id
             </th>
             <th scope="col" class="px-6 py-3 font-light text-[#F08E1F]">
-              Menu
+              Crockery
             </th>
             <th scope="col" class="px-6 py-3 font-light text-[#F08E1F]">
               edit
@@ -120,11 +118,11 @@ const MenuTable = () => {
                 //  onClick={()=>navigate(`/menudetail/${item._id}`)}
               >
                  <td class="px-6 py-2">{item._id.slice(0,6)}</td>
-                <td class="px-6 py-2">{item.menu.slice(0,9)}...</td>
+                <td class="px-6 py-2">{item.crockery.slice(0,9)}...</td>
                
-                <Link to={`/editmenu/${item._id}`}><td class="px-6 py-2"><MdEdit className='mt-3'/></td></Link>
+                <Link to={`/editcrockery/${item._id}`}><td class="px-6 py-2"><MdEdit className='mt-3'/></td></Link>
                 <td class="px-6 py-2" onClick={() => handleDelete(item._id)}><SlTrash className='text-red-800'/></td>
-                <Link to={`/menudetail/${item._id}`}><td class="px-6 py-2"><HiOutlineArchiveBox className=''/></td></Link>
+                <Link to={`/crockerydetail/${item._id}`}><td class="px-6 py-2"><HiOutlineArchiveBox className=''/></td></Link>
                
               </tr>
 
@@ -143,4 +141,4 @@ const MenuTable = () => {
   )
 }
 
-export default MenuTable
+export default CrockeryTable

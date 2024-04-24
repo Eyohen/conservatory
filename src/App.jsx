@@ -16,6 +16,9 @@ import MenuPage from './pages/MenuPage'
 import MenuTable from './pages/menuTable'
 import MenuDetail from './pages/MenuDetail'
 import EditMenu from './pages/EditMenu'
+import CrockeryPage from './pages/CrockeryPage'
+import CrockeryTable from './pages/CrockeryTable'
+import CrockeryDetail from './pages/CrockeryDetail'
 
 const App = () => {
   return (
@@ -35,7 +38,13 @@ const App = () => {
     <Route exact path="/menupage" element={<MenuPage/>}/>
     <Route exact path="/menutable" element={<MenuTable/>}/>
     <Route exact path="/menudetail/:id" element={<MenuDetail/>}/>
+    <Route exact path="/crockerydetail/:id" element={<CrockeryDetail/>}/>
     <Route exact path="/editmenu/:id" element={<EditMenu/>}/>
+    <Route exact path="/crockerypage" element={<CrockeryPage/>}/>
+    <Route exact path="/crockerytable" element={<CrockeryTable/>}/>
+
+
+    
     </Routes>
      </UserContextProvider>
   )
