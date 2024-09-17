@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import axios from "axios"
 import { URL, IF } from '../url';
 import { useNavigate, useParams, Link } from 'react-router-dom';
+import tearoom  from '../assets/tearoom.jpg'
 
 
 const CrockeryDetail = () => {
@@ -14,7 +15,7 @@ const CrockeryDetail = () => {
     const getCrockery = async () => {
         try {  
           const res =  await axios.get(URL+"/api/crockerys/"+crockeryId)
-          console.log(res.data)
+          console.log("crockery ooo",res.data)
           setItems(res.data)
         //   console.log(reservation)
         }
@@ -39,10 +40,10 @@ const CrockeryDetail = () => {
         <p className='text-center mt-9'>Crockery Detail</p>
 
       <p>{items?.crockery}</p>
-    <img src={IF+items?.photo ? IF+items?.photo : 'https://media.istockphoto.com/id/1457433817/photo/group-of-healthy-food-for-flexitarian-diet.jpg?s=612x612&w=0&k=20&c=v48RE0ZNWpMZOlSp13KdF1yFDmidorO2pZTu2Idmd3M='} alt='' className='object-cover w-[450px] h-[250px]'/>
-   <div className='max-w-[450px] break-words'>
+    <img src={items?.image ? items?.image : tearoom} alt='' className='object-cover w-[450px] h-[250px]'/>
+   {/* <div className='max-w-[450px] break-words'>
 <p className='items-center'>Description : {items?.description}</p>
-</div>
+</div> */}
 
    
   

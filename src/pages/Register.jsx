@@ -115,7 +115,7 @@ const Register = () => {
         <button onClick={handleSubmit}  className='bg-[#F7F7F7] text-[#98999A] w-full md:w-[400px] py-2 rounded-2xl mt-6 hover:bg-[#F3D8A7] hover:text-white'>{isLoading ? "Loading..." : "Sign Up"}</button>
         {error && <h3 className='text-red-500 text-lg text-center'>Something went wrong</h3>}
         </div>
-        <p className='pt-3 text-center text-[#98999A]'>Don't have an account?   <Link to={'/register'}><span className='text-[#F08E1F] ml-1'>Create an account</span></Link></p>
+        <p className='pt-3 text-center text-[#98999A]'>Already have an account?   <Link to={'/login'}><span className='text-[#F08E1F] ml-1'>Log in to your account</span></Link></p>
         </div>
 
     </div>

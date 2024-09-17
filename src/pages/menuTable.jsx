@@ -7,6 +7,7 @@ import { SlArrowLeft } from "react-icons/sl";
 import { SlTrash } from "react-icons/sl";
 import { HiOutlineArchiveBox } from "react-icons/hi2";
 import { MdEdit } from "react-icons/md";
+import Sidebar from '../components/Sidebar';
 
 
 
@@ -25,7 +26,7 @@ const MenuTable = () => {
     //   }
 
 
-        const res = await axios.get(URL+"/api/list-posts"
+        const res = await axios.get(URL+"/api/menus"
         //,{
         //   headers: {
         //     Authorization: `Bearer ${accessToken}`,
@@ -61,7 +62,7 @@ const MenuTable = () => {
             Authorization: `Bearer ${accessToken}`,
           },
         })
-        setItems((prevData) => prevData.filter(item => item._id !== itemId));
+        setItems((prevData) => prevData.filter(item => item.id !== itemId));
         console.log(res.data)
       }
       catch(err){
@@ -72,7 +73,9 @@ const MenuTable = () => {
 
 
   return (
-    <div className='w-full'>
+    <div>
+      <Sidebar/>
+    <div className='w-full flex-1 ml-[100px]'>
         <div className='flex justify-between  h-12 bg-white mt-6'>
         <div onClick={() => navigate(-1)} className="flex items-center space-x-3 pt-6 px-12">
         <SlArrowLeft />
@@ -86,7 +89,7 @@ const MenuTable = () => {
         <div className='max-w-[1100px] bg-white mx-auto'>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-16">
       <h1 className="font-bold text-2xl mt-10 text-center text-[#F08E1F]">
-        Posts Created
+        Menus Created
       </h1>
 
       <div class="max-h-60 overflow-y-auto">
@@ -116,15 +119,15 @@ const MenuTable = () => {
             
               <tr
                 class="bg-white border-b dark:bg-gray-900 dark:border-gray-700 hover:bg-gray-200"
-                key={item._id}
+                key={item.id}
                 //  onClick={()=>navigate(`/menudetail/${item._id}`)}
               >
-                 <td class="px-6 py-2">{item._id.slice(0,6)}</td>
-                <td class="px-6 py-2">{item.menu.slice(0,9)}...</td>
+                 <td class="px-6 py-2">{item.id.slice(0,6)}</td>
+                <td class="px-6 py-2">{item.title.slice(0,7)}...</td>
                
-                <Link to={`/editmenu/${item._id}`}><td class="px-6 py-2"><MdEdit className='mt-3'/></td></Link>
-                <td class="px-6 py-2" onClick={() => handleDelete(item._id)}><SlTrash className='text-red-800'/></td>
-                <Link to={`/menudetail/${item._id}`}><td class="px-6 py-2"><HiOutlineArchiveBox className=''/></td></Link>
+                <Link to={`/editmenu/${item.id}`}><td class="px-6 py-2"><MdEdit className='mt-3'/></td></Link>
+                <td class="px-6 py-2" onClick={() => handleDelete(item.id)}><SlTrash className='text-red-800'/></td>
+                <Link to={`/menudetail/${item.id}`}><td class="px-6 py-2"><HiOutlineArchiveBox className=''/></td></Link>
                
               </tr>
 
@@ -137,7 +140,7 @@ const MenuTable = () => {
        
       
        
-        
+        </div>
         
     </div>
   )

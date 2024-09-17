@@ -14,7 +14,7 @@ const MenuDetail = () => {
     const getMenu = async () => {
         try {  
           const res =  await axios.get(URL+"/api/menus/"+menuId)
-          console.log(res.data)
+          console.log("checking menu detail",res.data)
           setItems(res.data)
         //   console.log(reservation)
         }
@@ -36,19 +36,24 @@ const MenuDetail = () => {
         <SlArrowLeft color='#ffb640' />
         <h1 className='text-md font-md cursor-pointer text-[#ffb640]'>go back</h1>
         </div> 
-        <p className='text-center mt-9'>MenuDetail</p>
+        <p className='text-center mt-9'>Menu detail</p>
 
-      <p>{items?.menu}</p>
-    <img src={IF+items?.photo ? IF+items?.photo : 'https://media.istockphoto.com/id/1457433817/photo/group-of-healthy-food-for-flexitarian-diet.jpg?s=612x612&w=0&k=20&c=v48RE0ZNWpMZOlSp13KdF1yFDmidorO2pZTu2Idmd3M='} alt='' className='object-cover w-[450px] h-[250px]'/>
+      <p className="font-semibold text-xl">{items?.title}</p>
+
+      <p className="font-semibold text-xl">₦{items?.price}</p>
+    {/* <img src={IF+items?.imageUrl ? IF+items?.imageUrl : 'https://media.istockphoto.com/id/1457433817/photo/group-of-healthy-food-for-flexitarian-diet.jpg?s=612x612&w=0&k=20&c=v48RE0ZNWpMZOlSp13KdF1yFDmidorO2pZTu2Idmd3M='} alt='' className='object-cover w-[450px] h-[250px]'/> */}
+    <img src={items?.imageUrl} className='object-cover w-[450px] h-[250px]' />
    <div className='max-w-[450px] break-words'>
-<p className='items-center'>Description : {items?.description}</p>
+<p className='items-center'><span className="font-semibold text-xl">Description</span> : {items?.description}</p>
 </div>
-   <p>Savory: {items?.submenus?.map((i) => (i.savory))}</p>
-   <p>Semi-sweet: {items?.submenus?.map((i) => (i.semi_sweet))}</p>
-   <p>Desserts: {items?.submenus?.map((i) => (i.dessert))}</p>
+<p><span className="font-semibold text-xl">Savory</span>: {items?.savoury}</p>
+<p><span className="font-semibold text-xl">Semi-sweet</span>: {items?.semiSweet}</p>
+   <p> <span className="font-semibold text-xl">Desserts</span>: {items?.dessert}</p> 
+
    
   
     </div>
+    <div className="mb-12"></div>
     </div>
   )
 }

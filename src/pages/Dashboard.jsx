@@ -6,6 +6,7 @@ import { SlPencil } from "react-icons/sl";
 import { SlArrowLeft } from "react-icons/sl";
 import { SlTrash } from "react-icons/sl";
 import { HiOutlineArchiveBox } from "react-icons/hi2";
+import Sidebar from '../components/Sidebar';
 
 
 
@@ -24,7 +25,7 @@ const  Dashboard = () => {
       //   console.error("Access token not fund");
       // }
 
-        const res = await axios.get(URL+"/api/bookings",
+        const res = await axios.get(URL+"/api/users",
         // {
         //   headers: {
         //     Authorization: `Bearer ${accessToken}`,
@@ -52,14 +53,14 @@ const  Dashboard = () => {
         //       // Handle the case where the access token is not available
         //   console.error('Access token not found')
         // }
-        const res = await axios.delete(URL+"/api/bookings/"+itemId
+        const res = await axios.delete(URL+"/api/users/"+itemId
         // ,{
         //   headers: {
         //     Authorization: `Bearer ${accessToken}`,
         //   },
         // }
       )
-        setItems((prevData) => prevData.filter(item => item._id !== itemId));
+        setItems((prevData) => prevData.filter(item => item.id !== itemId));
         console.log(res.data)
       }
       catch(err){
@@ -70,28 +71,11 @@ const  Dashboard = () => {
 
 
   return (
-    <div className='w-full'>
-        <div className='flex justify-between  h-12 bg-white mt-6'>
-        <div onClick={() => navigate(-1)} className="flex items-center space-x-3 pt-6 px-12">
-        <SlArrowLeft />
-        <h1 className='font-bold md:text-2xl text-xl '>Back</h1>
-        </div>
+    <div>
+      <Sidebar/>
+    <div className='w-full flex-1 ml-[100px]'>
+        <div className='flex justify-between h-12 bg-white mt-6'>
 
-       <Link to={'/seespecial'}><div className="flex items-center space-x-3 pt-6 px-12">
-    
-        <h1 className='font-bold md:text-2xl text-xl text-[#F08E1F]'>See Special requests</h1>
-        </div></Link> 
-        
-       <Link to={'/menupage'}><div className="flex items-center space-x-3 pt-6 px-12">
-    
-    <h1 className='font-bold md:text-2xl text-xl text-[#F08E1F]'>Create menu</h1>
-    </div></Link> 
-
-
-    <Link to={'/crockerypage'}><div className="flex items-center space-x-3 pt-6 px-12">
-    
-    <h1 className='font-bold md:text-2xl text-xl text-[#F08E1F]'>Create crockery</h1>
-    </div></Link> 
         </div>
 
         <div className='max-w-[1100px] bg-white mx-auto'>
@@ -99,37 +83,34 @@ const  Dashboard = () => {
      
 
       <h1 className="font-bold text-2xl mt-10 text-center text-[#F08E1F]">
-       Bookings and reservations
+       Users
       </h1>
 
       <div class="max-h-60 overflow-y-auto">
 
       <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-5">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr >
           <th scope="col" class="px-6 py-3 font-light text-[#F08E1F]">
               id
             </th>
             <th scope="col" class="px-6 py-3 font-light text-[#F08E1F]">
-              date
+              First Name
             </th>
             <th scope="col" class="px-6 py-3 font-light text-[#F08E1F]">
-              time
+              Last Name
             </th>
             <th scope="col" class="px-6 py-3 font-light text-[#F08E1F]">
-              Menu
+              date registered
             </th>
-       
-            <th scope="col" class="px-6 py-3 font-light text-[#F08E1F]">
-              Crockery
-            </th>
-          
             <th scope="col" class="px-6 py-3 font-light text-[#F08E1F]">
               view
             </th>
+     
             <th scope="col" class="px-6 py-3 font-light text-[#F08E1F]">
               delete
             </th>
+
  
           </tr>
         </thead>
@@ -141,15 +122,14 @@ const  Dashboard = () => {
                 key={item._id}
                 //  onClick={()=>navigate(`/reservedetail/${item._id}`)}
               >
-                 <td class="px-6 py-2">{item._id.slice(0,6)}</td>
+                 <td class="px-6 py-2">{item.id?.slice(0,6)}</td>
      
-               <td class="px-6 py-2">{new Date(item.date)?.toDateString()}</td>
-                <td class="px-6 py-2">{item.time}</td>
-                <td class="px-6 py-2">{item.menu.slice(0,9)}</td>
-                <td class="px-6 py-2">{item.crockery}</td>
-
-                <Link to={`/bookingitem/${item._id}`}><td class="px-6 py-2"><HiOutlineArchiveBox className='mt-3'/></td></Link>
-                <td class="px-6 py-2" onClick={() => handleDelete(item._id)}><SlTrash className='text-red-800'/></td>
+                 <td class="px-6 py-2">{item.firstName?.slice(0,9)+"..."}</td>
+                 <td class="px-6 py-2">{item.lastName?.slice(0,9)+"..."}</td>
+               <td class="px-6 py-2">{new Date(item.createdAt)?.toDateString()}</td>
+                <Link to={`/bookingitem/${item.id}`}><td class="px-6 py-2"><HiOutlineArchiveBox className='mt-3'/></td></Link>
+                <td class="px-6 py-2" onClick={() => handleDelete(item.id)}><SlTrash className='text-red-800'/></td>
+             
                
               </tr>
             ))}
@@ -162,7 +142,7 @@ const  Dashboard = () => {
       
        
         
-        
+        </div>
     </div>
   )
 }

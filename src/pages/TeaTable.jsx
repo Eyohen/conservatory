@@ -11,12 +11,12 @@ import Sidebar from '../components/Sidebar';
 
 
 
-const CrockeryTable = () => {
+const TeaTable = () => {
   const navigate=useNavigate()
     const [showConfirmation, setShowConfirmation] = useState("")
     const [items, setItems] = useState([])
 
-    const fetchMenus = async () => {
+    const fetchTeas = async () => {
 
     //   const accessToken = localStorage.getItem("access_token");
 
@@ -26,7 +26,7 @@ const CrockeryTable = () => {
     //   }
 
 
-        const res = await axios.get(URL+"/api/crockerys"
+        const res = await axios.get(URL+"/api/teas"
         //,{
         //   headers: {
         //     Authorization: `Bearer ${accessToken}`,
@@ -39,7 +39,7 @@ const CrockeryTable = () => {
 
 
     useEffect(() => {
-      fetchMenus()
+      fetchTeas()
     }, [])
 
 
@@ -57,7 +57,7 @@ const CrockeryTable = () => {
         }
   
   
-        const res = await axios.delete(URL+"/api/crockerys/"+itemId,{
+        const res = await axios.delete(URL+"/api/teas/"+itemId,{
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
@@ -89,7 +89,7 @@ const CrockeryTable = () => {
         <div className='max-w-[1100px] bg-white mx-auto'>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-16">
       <h1 className="font-bold text-2xl mt-10 text-center text-[#F08E1F]">
-        Crockeries Created
+        Teas Created
       </h1>
 
       <div class="max-h-60 overflow-y-auto">
@@ -100,7 +100,7 @@ const CrockeryTable = () => {
               id
             </th>
             <th scope="col" class="px-6 py-3 font-light text-[#F08E1F]">
-              Crockery
+              Tea
             </th>
             <th scope="col" class="px-6 py-3 font-light text-[#F08E1F]">
               edit
@@ -123,11 +123,11 @@ const CrockeryTable = () => {
                 //  onClick={()=>navigate(`/menudetail/${item._id}`)}
               >
                  <td class="px-6 py-2">{item.id.slice(0,6)}</td>
-                <td class="px-6 py-2">{item.crockery.slice(0,7)}...</td>
+                <td class="px-6 py-2">{item.title.slice(0,7)}...</td>
                
-                <Link to={`/editcrockery/${item.id}`}><td class="px-6 py-2"><MdEdit className='mt-3'/></td></Link>
+                <Link to={`/edittea/${item.id}`}><td class="px-6 py-2"><MdEdit className='mt-3'/></td></Link>
                 <td class="px-6 py-2" onClick={() => handleDelete(item.id)}><SlTrash className='text-red-800'/></td>
-                <Link to={`/crockerydetail/${item.id}`}><td class="px-6 py-2"><HiOutlineArchiveBox className=''/></td></Link>
+                <Link to={`/teadetail/${item.id}`}><td class="px-6 py-2"><HiOutlineArchiveBox className=''/></td></Link>
                
               </tr>
 
@@ -140,10 +140,10 @@ const CrockeryTable = () => {
        
       
        
-        
         </div>
+        
     </div>
   )
 }
 
-export default CrockeryTable
+export default TeaTable

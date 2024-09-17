@@ -60,7 +60,7 @@ const  AllMyBookings = () => {
             Authorization: `Bearer ${accessToken}`,
           },
         })
-        setItems((prevData) => prevData.filter(item => item._id !== itemId));
+        setItems((prevData) => prevData.filter(item => item.id !== itemId));
         console.log(res.data)
       }
       catch(err){
@@ -165,10 +165,10 @@ const  AllMyBookings = () => {
             {items.map((item) => (
               <tr
                 class="bg-white border-b dark:bg-gray-900 dark:border-gray-700 hover:bg-gray-200"
-                key={item._id}
+                key={item.id}
                 //  onClick={()=>navigate(`/reservedetail/${item._id}`)}
               >
-                 <td class="px-6 py-2">{item._id.slice(0,6)}</td>
+                 <td class="px-6 py-2">{item.id.slice(0,6)}</td>
                 {/* <th
                   scope="row"
                   class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -196,8 +196,8 @@ const  AllMyBookings = () => {
              
                 {/* <td class="px-6 py-2">{item.date}</td> */}
                
-                <Link to={`/bookingitem/${item._id}`}><td class="px-6 py-2"><HiOutlineArchiveBox className='mt-3'/></td></Link>
-                <td class="px-6 py-2" onClick={() => handleDelete(item._id)}><SlTrash className='text-red-800'/></td>
+                <Link to={`/bookingitem/${item.id}`}><td class="px-6 py-2"><HiOutlineArchiveBox className='mt-3'/></td></Link>
+                <td class="px-6 py-2" onClick={() => handleDelete(item.id)}><SlTrash className='text-red-800'/></td>
                
               </tr>
             ))}

@@ -10,15 +10,17 @@ import axios from 'axios'
 // import  'react-phone-number-input/style.css'
 import { RiEyeLine, RiEyeOffLine } from "react-icons/ri";
 import { URL } from "../url"
+import { useAuth } from '../context/AuthContext';
 
 
 
 
 const AdminLogin = () => {
 
+  const {login} = useAuth();
   const [email, setEmail] = useState('')
-
   const [error,setError] = useState(false)
+  const [errMessage,setErrMessage] = useState('')
 
   const [password, setPassword] = useState('')
 
@@ -42,11 +44,12 @@ const AdminLogin = () => {
     try{
       const res = await axios.post(URL+"/api/auth/adminlogin", {email,password})
 
-      const {access_token} = res.data;
+      const {accessToken, user} = res.data;
 
       if(res.status == 200){
-        localStorage.setItem("access_token", access_token)
-        localStorage.setItem("currentUser", JSON.stringify(res.data))
+        localStorage.setItem("access_token", accessToken)
+        // localStorage.setItem("currentUser", JSON.stringify(res.data))
+        login(user)
         console.log(res.data)
         // setUser(res.data)
         navigate("/dashboard")
@@ -57,10 +60,18 @@ const AdminLogin = () => {
     }
     catch(err) {
       setError(true)
-      console.log(err)
-    } finally {
-      setIsLoading(false)
-    }
+      if (err.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        const { data } = err.response;
+        if (data) {
+            setErrMessage(data.msg);
+            console.log("is tis error?",data.msg)
+        }
+    
+      }}finally{
+        setIsLoading(false)
+      }
 
 }
 
@@ -99,15 +110,11 @@ const AdminLogin = () => {
 
   </div>
 
-
-       
-
-
-
         <div>
         {/* <p className='text-gray-600 text-sm text-center mt-4'>By clicking sign up, you agree to our <span className='text-[#F08E1F]'>terms and data policy</span></p> */}
         <button onClick={handleSubmit}  className='bg-[#F7F7F7] text-[#98999A] w-full md:w-[400px] py-2 rounded-2xl mt-6 hover:bg-[#F3D8A7] hover:text-white'>{isLoading ? "Loading..." : "Login"}</button>
         {error && <h3 className='text-red-500 text-lg text-center'>Something went wrong</h3>}
+        {errMessage && <p className='text-red-500 text-lg text-center'>{errMessage}</p>}
         </div>
         <p className='pt-3 text-center text-[#98999A]'>Don't have an account?   <Link to={'/register'}><span className='text-[#F08E1F] ml-1'>Create an account</span></Link></p>
         </div>
@@ -121,4 +128,4 @@ const AdminLogin = () => {
   )
 }
 
-export default AdminLogin
+export default AdminLogin;

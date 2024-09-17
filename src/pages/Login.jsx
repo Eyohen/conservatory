@@ -10,11 +10,17 @@ import axios from 'axios'
 // import  'react-phone-number-input/style.css'
 import { RiEyeLine, RiEyeOffLine } from "react-icons/ri";
 import { URL } from "../url"
+import { useAuth } from '../context/AuthContext';
+
+
+
 
 
 
 
 const Login = () => {
+
+  const { login} = useAuth();
 
   const [email, setEmail] = useState('')
 
@@ -42,11 +48,14 @@ const Login = () => {
     try{
       const res = await axios.post(URL+"/api/auth/login", {email,password})
 
-      const {access_token} = res.data;
+      const {accessToken, user} = res.data;
+     
 
       if(res.status == 200){
-        localStorage.setItem("access_token", access_token)
-        localStorage.setItem("currentUser", JSON.stringify(res.data))
+        localStorage.setItem("access_token", accessToken)
+        // localStorage.setItem("currentUser", JSON.stringify(res.data))
+
+        login(user)
         console.log(res.data)
         // setUser(res.data)
         navigate("/")
