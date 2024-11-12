@@ -59,7 +59,7 @@ const BookingConfirmation = () => {
 
 <p className='text-left text-lg text-[#5b3e31] mt-2'>Amount Paid: ₦{book.price}.</p>
 
-<p className='text-left text-lg text-[#5b3e31] mt-2'>Enjoy your reservation.</p>
+<p className='text-left text-lg text-[#5b3e31] mt-2'>We look forward to giving you a delightful experience.</p>
       </div>
 
       </div>

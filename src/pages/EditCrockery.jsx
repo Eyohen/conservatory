@@ -1,108 +1,3 @@
-// import React, {useEffect, useState} from 'react'
-// import { URL } from '../url';
-// import axios from "axios"
-// import { Link, useNavigate, useParams } from "react-router-dom"
-
-
-
-// const EditCrockery = () => {
-//     const crockeryId = useParams().id;
-//     const treatId = useParams().id;
-//     const navigate = useNavigate()
-//     const [crockery, setCrockery] = useState([])
-//     const [description, setDescription] = useState('')
-//     const [price, setPrice] = useState('')
-    
-//     const [file,setFile]=useState(null)
-//     const [isLoading, setIsLoading] = useState(false)
-
-//     const [error, setError] = useState(false)
-
-
-
-//     const fetchMenu = async () => {
-//         try {
-//           const res = await axios.get(URL+"/api/crockerys/"+crockeryId);
-//           console.log(res.data)
-//           setCrockery(res.data.crockery);
-//           setDescription(res.data.description);
-//           setPrice(res.data.price);
-     
-//         } catch (err) {
-//           console.log(err);
-//         }
-//       };
-    
-//       useEffect(() => {
-//         fetchMenu();
-//       }, [crockeryId]);
-
-
-
-//     const editCrockery = async ()=>{
-//     setIsLoading(true)
-
-//         try{
-
-//           const res = await axios.put(URL+"/api/crockerys/"+crockeryId, {crockery, description, imageUrl}
-//           )
-//            console.log("checking edited menu", res.data)
-//           setError(false)
-      
-//         }
-//         catch(err){
-//           setError(true)
-//           console.log(err)
-//         }finally {
-//           setIsLoading(false)
-          
-//         }
-//       }
- 
-
-
-
-
-
-//   return (
-//     <div className=''>
-//         <p className='text-center text-xl mt-16'>Edit Crockery</p>
-
-//         <div className='max-w-[320px] mx-auto mt-16'>
-//         <p className=''>Crockery</p>
-//         <input value={crockery} onChange={(e) => setCrockery(e.target.value)} className='border border-[#F08E1F] w-full rounded-md px-2 py-1' placeholder=''/>
-
-       
-
-//         <p className='mt-4'>Description</p>
-//         <textarea value={description} onChange={(e) => setDescription(e.target.value)} className='border border-[#F08E1F]  w-full rounded-md px-2 py-1' placeholder='Please put in the description of the full menu'/>
-//         <input onChange={(e)=>setFile(e.target.files[0])}  className="border border-[#F08E1F] rounded-md w-full px-3 py-2"  type="file"  />
-       
-
-// <div className='w-1/2 mx-auto'>
-//         <button onClick={editCrockery} className='bg-[#F08E1F] text-white px-6 py-1 rounded mt-4 '>{isLoading ? 'Loading ...':'Edit Menu'}</button>
-//         </div>
-
-      
-
-
-
-//         </div>
-
-//         <Link to={'/menutable'}>
-//           <div className='text-center text-[#F08E1F] mt-4'>See menus created</div>
-//         </Link>
-
-        
-//         <p></p>
-        
-//         </div>
-//   )
-// }
-
-// export default EditCrockery
-
-
 import React, { useEffect, useState } from 'react';
 import { URL } from '../url';
 import axios from "axios";
@@ -111,11 +6,15 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 const EditCrockery = () => {
   const { id: crockeryId } = useParams();
   const navigate = useNavigate();
-  const [crockeryName, setCrockeryName] = useState('');
-  const [description, setDescription] = useState('');
+  const [crockery, setCrockery] = useState({
+    name: '',
+    description: '',
+  });
   const [file, setFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [currentImage, setCurrentImage] = useState('');
 
   useEffect(() => {
     fetchCrockery();
@@ -124,86 +23,163 @@ const EditCrockery = () => {
   const fetchCrockery = async () => {
     try {
       const res = await axios.get(`${URL}/api/crockerys/${crockeryId}`);
-      const { crockery, description } = res.data;
-      setCrockeryName(crockery);
-      setDescription(description);
+      setCrockery({
+        name: res.data.crockery,
+        description: res.data.description
+      });
+      setCurrentImage(res.data.image);
     } catch (err) {
+      setError('Error fetching crockery details');
       console.error("Error fetching crockery:", err);
-      setError(true);
     }
   };
 
-  const editCrockery = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(false);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setCrockery(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
-    const formData = new FormData();
-    formData.append('crockery', crockeryName);
-    formData.append('description', description);
-    if (file) {
-      formData.append('image', file);
+  const handleFileChange = (e) => {
+    if (e.target.files[0]) {
+      setFile(e.target.files[0]);
     }
+  };
 
+  const updateCrockeryDetails = async () => {
+    try {
+      const res = await axios.put(`${URL}/api/crockerys/${crockeryId}`, {
+        crockery: crockery.name,
+        description: crockery.description
+      });
+      return res.data;
+    } catch (err) {
+      throw new Error('Failed to update crockery details');
+    }
+  };
+
+  const uploadImage = async () => {
+    if (!file) return null;
+    
+    const formData = new FormData();
+    formData.append('image', file);
+    
     try {
       const res = await axios.put(`${URL}/api/crockerys/${crockeryId}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      console.log("Crockery edited successfully:", res.data);
-      navigate('/crockerytable');
+      return res.data;
     } catch (err) {
-      console.error("Error editing crockery:", err);
-      setError(true);
+      throw new Error('Failed to upload image');
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+    setSuccessMessage('');
+
+    try {
+      // Update crockery details
+      await updateCrockeryDetails();
+
+      // If there's a new image, upload it separately
+      if (file) {
+        await uploadImage();
+      }
+
+      setSuccessMessage('Crockery updated successfully');
+      setTimeout(() => navigate('/crockerytable'), 1500);
+    } catch (err) {
+      setError(err.message || 'An error occurred while updating the crockery');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8">
-      <h2 className="text-2xl font-bold mb-4">Edit Crockery</h2>
-      <form onSubmit={editCrockery}>
+    <div className="max-w-md mx-auto mt-8 p-6">
+      <h2 className="text-2xl font-bold mb-6">Edit Crockery</h2>
+      
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          {error}
+        </div>
+      )}
+      
+      {successMessage && (
+        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+          {successMessage}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div className="mb-4">
-          <label className="block mb-2">Crockery Name</label>
+          <label className="block text-sm font-medium mb-2">
+            Crockery Name
+          </label>
           <input
             type="text"
-            value={crockeryName}
-            onChange={(e) => setCrockeryName(e.target.value)}
-            className="border border-[#F08E1F] w-full rounded-md px-2 py-1"
+            name="name"
+            value={crockery.name}
+            onChange={handleInputChange}
+            className="w-full px-3 py-2 border border-[#F08E1F] rounded focus:outline-none focus:ring-2 focus:ring-[#F08E1F]"
             required
           />
         </div>
+
         <div className="mb-4">
-          <label className="block mb-2">Description</label>
+          <label className="block text-sm font-medium mb-2">
+            Description
+          </label>
           <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="border border-[#F08E1F] w-full rounded-md px-2 py-1"
-            placeholder="Please put in the description of the crockery"
+            name="description"
+            value={crockery.description}
+            onChange={handleInputChange}
+            rows={4}
+            className="w-full px-3 py-2 border border-[#F08E1F] rounded focus:outline-none focus:ring-2 focus:ring-[#F08E1F]"
           />
         </div>
+
         <div className="mb-4">
-          <label className="block mb-2">Image</label>
+          <label className="block text-sm font-medium mb-2">
+            Current Image
+          </label>
+          {currentImage && (
+            <img 
+              src={currentImage} 
+              alt="Current crockery"
+              className="w-32 h-32 object-cover rounded mb-2" 
+            />
+          )}
           <input
             type="file"
-            onChange={(e) => setFile(e.target.files[0])}
-            className="border border-[#F08E1F] rounded-md w-full px-3 py-2"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="w-full px-3 py-2 border border-[#F08E1F] rounded focus:outline-none focus:ring-2 focus:ring-[#F08E1F]"
           />
         </div>
-        <div className="text-center">
+
+        <div className="flex gap-4">
           <button
             type="submit"
-            className="bg-[#F08E1F] text-white px-6 py-2 rounded mt-4"
             disabled={isLoading}
+            className="flex-1 bg-[#F08E1F] text-white py-2 px-4 rounded hover:bg-[#E07D0E] transition-colors disabled:opacity-50"
           >
-            {isLoading ? 'Loading...' : 'Edit Crockery'}
+            {isLoading ? 'Updating...' : 'Update Crockery'}
           </button>
+          
+          <Link
+            to="/crockerytable"
+            className="flex-1 text-center py-2 px-4 border border-[#F08E1F] text-[#F08E1F] rounded hover:bg-[#FFF5E9] transition-colors"
+          >
+            Cancel
+          </Link>
         </div>
       </form>
-      {error && <p className="text-red-500 mt-4">An error occurred. Please try again.</p>}
-      <Link to="/crockerytable" className="block text-center text-[#F08E1F] mt-4">
-        See crockery list
-      </Link>
     </div>
   );
 };

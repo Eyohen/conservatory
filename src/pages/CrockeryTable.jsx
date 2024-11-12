@@ -76,11 +76,13 @@ const CrockeryTable = () => {
     <div>
       <Sidebar/>
     <div className='w-full flex-1 ml-[100px]'>
-        <div className='flex justify-between  h-12 bg-white mt-6'>
-        <div onClick={() => navigate(-1)} className="flex items-center space-x-3 pt-6 px-12">
+        <div className='flex justify-evenly h-12 bg-white mt-6 ml-[100px]'>
+        <div onClick={() => navigate(-1)} className="flex items-center space-x-3 pt-2 px-12">
         <SlArrowLeft />
         <h1 className='font-bold md:text-2xl text-xl '>Back</h1>
         </div>
+
+        <button className='bg-[#F08E1F] px-4 rounded-md text-white'>Create Crockery</button>
 
     
         </div>
