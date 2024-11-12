@@ -105,10 +105,12 @@ import { Link } from 'react-router-dom';
 import logo from '../assets/irologo.jpg'
 import { useAuth } from '../context/AuthContext';
 import { URL } from "../url";
-import axios from 'axios'
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
   const {login, user} = useAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);

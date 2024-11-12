@@ -105,8 +105,10 @@ import { Link } from 'react-router-dom';
 import logo from '../assets/irologo.jpg'
 import axios from 'axios'
 import { URL } from "../url"
+import { useNavigate } from 'react-router-dom'
 
 const Register = () => {
+  const navigate = useNavigate();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
