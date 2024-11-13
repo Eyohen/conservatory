@@ -44,13 +44,40 @@ const TeaMenu = () => {
   const closeModal = () => setIsModalOpen(false);
 
   const [selectedTeas, setSelectedTeas] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  // const handleTeaSelection = (e, teaType) => {
+  //   const tea = e.target.value;
+  //   if (tea) {
+  //     setSelectedTeas(prev => [...prev, `${teaType} : ${tea}`]);
+  //   }
+  // }
 
   const handleTeaSelection = (e, teaType) => {
     const tea = e.target.value;
-    if (tea) {
-      setSelectedTeas(prev => [...prev, `${teaType} : ${tea}`]);
-    }
-  }
+    if (!tea) return; // Skip empty selections
+    
+    setSelectedTeas(prev => {
+      // Remove any existing selection for this tea type
+      const withoutCurrentType = prev.filter(t => !t.startsWith(`${teaType} :`));
+      
+      // If we already have 2 selections and this is a new selection
+      if (withoutCurrentType.length >= 2) {
+        setErrorMessage('You can only select 2 teas in total. Please remove one first.');
+        return prev;
+      }
+      
+      setErrorMessage(''); // Clear error message on successful selection
+      return [...withoutCurrentType, `${teaType} : ${tea}`];
+    });
+  };
+  
+  // Add this function to handle tea removal
+  const removeTeaSelection = (teaType) => {
+    setSelectedTeas(prev => prev.filter(tea => !tea.startsWith(`${teaType} :`)));
+    setErrorMessage('');
+  };
+  
 
   const timeslots = ["11:30am - 1:30pm", "2pm - 4pm", "4:30pm - 6:30pm"];
 
@@ -442,7 +469,11 @@ const TeaMenu = () => {
     return date > twoDaysFromNow && !isSunday(date);
   };
 
-  const canBook = selectedTeas.length + (selectedCoffee ? 1 : 0) + (selectedIceTea ? 1 : 0) >= 2;
+  // const canBook = selectedTeas.length + (selectedCoffee ? 1 : 0) + (selectedIceTea ? 1 : 0) >= 2;
+
+  // Update the canBook validation
+const canBook = selectedTeas.length === 2 || 
+((selectedTeas.length + (selectedCoffee ? 1 : 0) + (selectedIceTea ? 1 : 0)) >= 2);
 
 
   return (
@@ -574,7 +605,144 @@ const TeaMenu = () => {
 
         <h3 className='text-xl md:text-2xl text-[#5b3e31] font-semibold text-center mt-6'>Tea Selection</h3>
 
-        {['Classic', 'Green', 'Specialty', 'Exotic', 'Blooming'].map((teaType) =>
+        <p className='text-lg md:text-xl text-[#5b3e31] text-center mt-2'>
+    Selected: {selectedTeas.length}/2 teas required
+  </p>
+
+  {errorMessage && (
+    <p className="text-red-500 text-center mt-2">
+      {errorMessage}
+    </p>
+  )}
+
+  <div className="space-y-4 mt-4">
+    {/* Classic Teas */}
+    <div className="relative">
+      <select 
+        value={selectedTeas.find(tea => tea.startsWith('Classic :'))?.split(': ')[1] || ''}
+        onChange={(e) => handleTeaSelection(e, 'Classic')}
+        className="w-full max-w-[500px] mx-auto block border border-gray-300 bg-[#F6EADF] text-gray-500 px-4 py-2 rounded"
+      >
+        <option value="">CLASSIC TEAS</option>
+        {classic.map(item => (
+          <option key={item.id} value={item.classicTea}>
+            {item.classicTea}
+          </option>
+        ))}
+      </select>
+      {selectedTeas.find(tea => tea.startsWith('Classic :')) && (
+        <button
+          onClick={() => removeTeaSelection('Classic')}
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 text-red-500 hover:text-red-700 text-xl"
+          style={{ marginRight: 'calc(50% - 240px)' }}
+        >
+          ×
+        </button>
+      )}
+    </div>
+
+    {/* Green Teas */}
+    <div className="relative">
+      <select 
+        value={selectedTeas.find(tea => tea.startsWith('Green :'))?.split(': ')[1] || ''}
+        onChange={(e) => handleTeaSelection(e, 'Green')}
+        className="w-full max-w-[500px] mx-auto block border border-gray-300 bg-[#F6EADF] text-gray-500 px-4 py-2 rounded"
+      >
+        <option value="">GREEN TEAS</option>
+        {items4.map(item => (
+          <option key={item.id} value={item.greenTea}>
+            {item.greenTea}
+          </option>
+        ))}
+      </select>
+      {selectedTeas.find(tea => tea.startsWith('Green :')) && (
+        <button
+          onClick={() => removeTeaSelection('Green')}
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 text-red-500 hover:text-red-700 text-xl"
+          style={{ marginRight: 'calc(50% - 240px)' }}
+        >
+          ×
+        </button>
+      )}
+    </div>
+
+    {/* Specialty Teas */}
+    <div className="relative">
+      <select 
+        value={selectedTeas.find(tea => tea.startsWith('Specialty :'))?.split(': ')[1] || ''}
+        onChange={(e) => handleTeaSelection(e, 'Specialty')}
+        className="w-full max-w-[500px] mx-auto block border border-gray-300 bg-[#F6EADF] text-gray-500 px-4 py-2 rounded"
+      >
+        <option value="">SPECIALTY TEAS</option>
+        {items5.map(item => (
+          <option key={item.id} value={item.specialtyTea}>
+            {item.specialtyTea}
+          </option>
+        ))}
+      </select>
+      {selectedTeas.find(tea => tea.startsWith('Specialty :')) && (
+        <button
+          onClick={() => removeTeaSelection('Specialty')}
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 text-red-500 hover:text-red-700 text-xl"
+          style={{ marginRight: 'calc(50% - 240px)' }}
+        >
+          ×
+        </button>
+      )}
+    </div>
+
+    {/* Exotic Teas */}
+    <div className="relative">
+      <select 
+        value={selectedTeas.find(tea => tea.startsWith('Exotic :'))?.split(': ')[1] || ''}
+        onChange={(e) => handleTeaSelection(e, 'Exotic')}
+        className="w-full max-w-[500px] mx-auto block border border-gray-300 bg-[#F6EADF] text-gray-500 px-4 py-2 rounded"
+      >
+        <option value="">EXOTIC TEAS</option>
+        {exotic.map(item => (
+          <option key={item.id} value={item.exoticTea}>
+            {item.exoticTea}
+          </option>
+        ))}
+      </select>
+      {selectedTeas.find(tea => tea.startsWith('Exotic :')) && (
+        <button
+          onClick={() => removeTeaSelection('Exotic')}
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 text-red-500 hover:text-red-700 text-xl"
+          style={{ marginRight: 'calc(50% - 240px)' }}
+        >
+          ×
+        </button>
+      )}
+    </div>
+
+    {/* Blooming Teas */}
+    <div className="relative">
+      <select 
+        value={selectedTeas.find(tea => tea.startsWith('Blooming :'))?.split(': ')[1] || ''}
+        onChange={(e) => handleTeaSelection(e, 'Blooming')}
+        className="w-full max-w-[500px] mx-auto block border border-gray-300 bg-[#F6EADF] text-gray-500 px-4 py-2 rounded"
+      >
+        <option value="">BLOOMING TEAS</option>
+        {items3.map(item => (
+          <option key={item.id} value={item.bloomingTea}>
+            {item.bloomingTea}
+          </option>
+        ))}
+      </select>
+      {selectedTeas.find(tea => tea.startsWith('Blooming :')) && (
+        <button
+          onClick={() => removeTeaSelection('Blooming')}
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 text-red-500 hover:text-red-700 text-xl"
+          style={{ marginRight: 'calc(50% - 240px)' }}
+        >
+          ×
+        </button>
+      )}
+    </div>
+  </div>
+
+        {/* {['Classic', 'Green', 'Specialty', 'Exotic', 'Blooming'].map((teaType) =>
         {
           // Find the current selection for this tea type from selectedTeas array
           const currentSelection = selectedTeas.find(tea => tea.startsWith(`${teaType} :`))?.split(': ')[1];
@@ -604,27 +772,7 @@ const TeaMenu = () => {
               </select>
             </div>
           );
-        }
-        //  (
-        //   <div className='flex justify-center mt-4' key={teaType}>
-        //     <select 
-        //       value={selectedTea}
-        //       onChange={(e) => handleTeaSelection(e, teaType)}
-        //       className="border border-gray-300 bg-[#F6EADF] w-full max-w-[500px] text-gray-500 px-2 py-2 rounded"
-        //     >
-        //       <option value="">{teaType.toUpperCase()} TEAS:</option>
-        //       {(teaType === 'Classic' ? classic :
-        //         teaType === 'Green' ? items4 :
-        //         teaType === 'Specialty' ? items5 :
-        //         teaType === 'Exotic' ? exotic :
-        //         items3).map(item => (
-        //         <option key={item.id} value={item[`${teaType.toLowerCase()}Tea`]}>{item[`${teaType.toLowerCase()}Tea`]}</option>
-        //       ))}
-        //     </select>
-        //   </div>
-        // )
-        
-        )}
+        })} */}
 
         <h3 className='text-xl md:text-2xl text-[#5b3e31] font-semibold text-center mt-8'>Coffee Selection</h3>
         <p className='text-lg md:text-xl text-[#5b3e31] text-center mt-2'>(additional ₦7,500)</p>

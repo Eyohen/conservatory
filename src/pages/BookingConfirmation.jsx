@@ -45,7 +45,7 @@ const BookingConfirmation = () => {
 
 <p className='text-left text-lg text-[#5b3e31] mt-2'>Time: {book.time}.</p>
 
-<p className='text-left text-lg text-[#5b3e31] mt-2'>Location: 7/12 Rumens roads, Ikoyi.</p>
+<p className='text-left text-lg text-[#5b3e31] mt-2'>Location: Irolagos, 7/12 Rumens roads, Ikoyi.</p>
 
 <p className='text-left text-lg text-[#5b3e31] mt-2'>Menu: {book.menu}.</p>
 
