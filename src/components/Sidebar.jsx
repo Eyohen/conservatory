@@ -64,8 +64,8 @@ const Sidebar = () => {
         <p className='py-1 text-center'>Crockeries</p>
         </div></Link>
 
-        <Link to={'/settings'}><div className='flex gap-x-3 items-center hover:bg-blue-200  px-2 mt-6 rounded'>
-        <IoSettingsOutline className=''/>
+        <Link to={'/admintable'}><div className='flex gap-x-3 items-center hover:bg-blue-200  px-2 mt-6 rounded'>
+        <FiUsers className=''/>
         <p className='py-1 text-center'>Team Members</p>
         </div></Link>
 

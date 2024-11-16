@@ -29,6 +29,9 @@ import BookingConfirmation from './pages/BookingConfirmation'
 import GiftOthers from './pages/GiftOthers'
 import BookingTable from './pages/BookingTable'
 import TeaTable from './pages/TeaTable'
+import AdminTable from './pages/AdminTable'
+import CreateTeamMember from './pages/CreateTeamMember'
+import EditBooking from './pages/EditBooking'
 
 const App = () => {
   return (
@@ -43,7 +46,10 @@ const App = () => {
     <Route exact path="/register" element={<Register />}/>
     <Route exact path="/admin" element={<AdminLogin />}/>
     <Route exact path="/dashboard" element={<Dashboard />}/>
+    <Route exact path="/admintable" element={<AdminTable/>}/>
+    <Route exact path="/createteammember" element={<CreateTeamMember/>}/>
     <Route exact path="/bookingtable" element={<BookingTable />}/>
+    <Route exact path="/editbooking/:id" element={<EditBooking />}/>
     <Route exact path="/bookingitem/:id" element={<BookingItem />}/>
     <Route exact path="/special" element={<Special />}/>
     <Route exact path="/seespecial" element={<SeeSpecial />}/>

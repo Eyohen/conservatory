@@ -374,12 +374,13 @@ const TeaMenu = () => {
       }
 
       //Adjust the date by adding one day
-      const adjustedDate = addDays(startDate, 1);
+      // const adjustedDate = addDays(startDate, 1);
 
       const res = await axios.post(URL + "/api/bookings/create", {
         time: bookingTime, menu: selectedMenu.title,
         crockery: selectedCrockery.crockery,
-        date: adjustedDate,
+        date: startDate,
+        // date: adjustedDate,
         price: money,
         email: userEmail,
         // tea:selectedTea,

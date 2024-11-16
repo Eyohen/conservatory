@@ -39,6 +39,7 @@ const GiftOthers = () => {
      const [selectedTime, setSelectedTime] = useState('')
      const [time, setTime] = useState('');
      const [giftemail, setGiftEmail] = useState('');
+     const [giftname, setGiftName] = useState('');
       const [menus, setMenu] = useState([]);
       const [selectedMenu, setSelectedMenu] = useState(null)
       const [crockery, setCrockery] = useState([]);
@@ -63,6 +64,8 @@ const GiftOthers = () => {
       const [selectedTeas, setSelectedTeas] = useState([]);
       const [errorMessage, setErrorMessage] = useState('');
   
+      console.log("giftname", giftname)
+
       // const handleTeaSelection = (e, teaType) => {
       //   const tea = e.target.value;
       //   if(tea) {
@@ -388,15 +391,17 @@ const GiftOthers = () => {
           }
           
           //Adjust the date by adding one day
-          const adjustedDate = addDays(startDate, 1);
+          // const adjustedDate = addDays(startDate, 1);
   
           const res = await axios.post(URL + "/api/bookings/create", {
             time:bookingTime, menu:selectedMenu.title,
             crockery:selectedCrockery.crockery,
-            date:adjustedDate,
+            date:startDate,
+          //  date:adjustedDate,
              price:money,
             email:userEmail, 
             giftemail,
+            giftname,
               tea:selectedTeas,
               coffee:selectedCoffee, iceTea:selectedIceTea,
               userId:user?.id
@@ -495,6 +500,14 @@ const GiftOthers = () => {
       <Navbar />
       <div className="container mx-auto px-4 py-8">
         <h1 className='text-2xl md:text-3xl text-[#5b3e31] text-center mb-6'>Menu</h1>
+
+        <div className='w-full max-w-[350px] mx-auto mb-6'>
+          <input 
+            onChange={(e) => setGiftName(e.target.value)}  
+            className='w-full border border-gray-300 bg-[#F6EADF] text-gray-800 px-4 py-2 rounded' 
+            placeholder='Enter Recipients first name' 
+          />
+        </div>
 
         <div className='w-full max-w-[350px] mx-auto mb-6'>
           <input 
