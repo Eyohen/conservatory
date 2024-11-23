@@ -78,7 +78,7 @@ const  BookingTable = () => {
 
         </div>
 
-        <div className='max-w-[1100px] bg-white mx-auto'>
+        <div className='max-w-[1300px] bg-white mx-auto'>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-16">
      
 
@@ -111,6 +111,9 @@ const  BookingTable = () => {
             <th scope="col" class="px-6 py-3 font-light text-[#F08E1F]">
               attended
             </th>
+            <th scope="col" class="px-6 py-3 font-light text-[#F08E1F]">
+              attended By
+            </th>
           
             <th scope="col" class="px-6 py-3 font-light text-[#F08E1F]">
               edit
@@ -138,6 +141,7 @@ const  BookingTable = () => {
                 <td class="px-6 py-2">{item.menu.slice(0,9)+"..."}</td>
                 <td class="px-6 py-2">{item.crockery}</td>
                 <td class="px-6 py-2">{item.attended === "attended" ? <div className='bg-green-300 px-3 py-1 text-white rounded-md'>attended</div> : <div className='bg-red-300 px-3 py-1 text-white rounded-md'>Unattended</div>}</td>
+                <td class="px-6 py-2">{item.attendedBy}</td>
 
                 <Link to={`/editbooking/${item.id}`}><td class="px-6 py-2"><HiOutlineArchiveBox className='mt-3'/></td></Link>
                 <td class="px-6 py-2" onClick={() => handleDelete(item.id)}><SlTrash className='text-red-800'/></td>

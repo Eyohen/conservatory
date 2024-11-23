@@ -36,7 +36,7 @@ const times = [
 const GiftOthers = () => {
   const [showTea, setShowTea] = useState(true)
     const [showCrockery, setShowCrockery] = useState(false)
-     const [selectedTime, setSelectedTime] = useState('')
+     const [selectedTime, Time] = useState('')
      const [time, setTime] = useState('');
      const [giftemail, setGiftEmail] = useState('');
      const [giftname, setGiftName] = useState('');
